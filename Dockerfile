@@ -1,8 +1,12 @@
+# Utiliser l'image officielle n8n
 FROM n8nio/n8n
 
-ENV N8N_BASIC_AUTH_ACTIVE=true
-ENV N8N_BASIC_AUTH_USER=admin
-ENV N8N_BASIC_AUTH_PASSWORD=superpassword
+# Définir le port interne (Render utilisera 443 à l'extérieur)
 ENV N8N_PORT=5678
 
+# Exposer le port interne
 EXPOSE 5678
+
+# Commande par défaut
+CMD ["n8n", "start"]
+
