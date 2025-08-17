@@ -7,6 +7,4 @@ ENV N8N_PORT=5678
 # Exposer le port interne
 EXPOSE 5678
 
-# Commande par défaut
-CMD ["n8n", "start"]
 
