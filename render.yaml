@@ -1,57 +1,40 @@
-databases:
-  - name: n8n-database
-    plan: free
-    region: frankfurt
-
 services:
   - type: web
-    name: n8n-service
+    name: n8n
     env: docker
-    repo: https://github.com/n8n-io/n8n
-    branch: master
-    plan: free
     region: frankfurt
-    dockerfilePath: Dockerfile
+    plan: free
+    branch: main
+    numInstances: 1
+    healthCheckPath: /healthz
     envVars:
-      # --- Database config ---
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
-        fromDatabase:
-          name: n8n-database
-          property: host
-      - key: DB_POSTGRESDB_PORT
-        fromDatabase:
-          name: n8n-database
-          property: port
+        value: YOUR_SUPABASE_HOST
       - key: DB_POSTGRESDB_DATABASE
-        fromDatabase:
-          name: n8n-database
-          property: database
+        value: YOUR_SUPABASE_DATABASE
+      - key: DB_POSTGRESDB_PORT
+        value: YOUR_SUPABASE_PORT
       - key: DB_POSTGRESDB_USER
-        fromDatabase:
-          name: n8n-database
-          property: user
+        value: YOUR_SUPABASE_USER
       - key: DB_POSTGRESDB_PASSWORD
-        fromDatabase:
-          name: n8n-database
-          property: password
-
-      # --- Security ---
+        value: YOUR_SUPABASE_PASSWORD
+      - key: DB_POSTGRESDB_SSLMODE
+        value: require
+      - key: PORT
+        value: 5678
+      - key: N8N_LOG_LEVEL
+        value: info
+      - key: GENERIC_TIMEZONE
+        value: Europe/Paris
+      - key: TZ
+        value: Europe/Paris
+      - key: N8N_DEFAULT_LOCALE
+        value: fr
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
       - key: N8N_BASIC_AUTH_ACTIVE
-        value: "true"
-      - key: N8N_BASIC_AUTH_USER
-        value: "anicet22.aps2a@gmail.com"
-      - key: N8N_BASIC_AUTH_PASSWORD
-        value: "N8N-deploy"
-
-      # --- Host config ---
-      - key: N8N_HOST
-        value: n8n-deploy-5io2.onrender.com
-      - key: N8N_PORT
-        value: "443"
-      - key: N8N_PROTOCOL
-        value: https
+        value: true
+     
 
