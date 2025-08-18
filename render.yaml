@@ -1,13 +1,19 @@
+databases:
+  - name: n8n-database
+    plan: free
+    region: frankfurt
+
 services:
   - type: web
     name: n8n-service
     env: docker
     repo: https://github.com/n8n-io/n8n
+    branch: master
     plan: free
     region: frankfurt
-    branch: main
     dockerfilePath: Dockerfile
     envVars:
+      # --- Database config ---
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
@@ -30,12 +36,8 @@ services:
         fromDatabase:
           name: n8n-database
           property: password
-      - key: N8N_HOST
-        value: n8n-service.onrender.com
-      - key: N8N_PORT
-        value: "443"
-      - key: N8N_PROTOCOL
-        value: https
+
+      # --- Security ---
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
       - key: N8N_BASIC_AUTH_ACTIVE
@@ -45,8 +47,11 @@ services:
       - key: N8N_BASIC_AUTH_PASSWORD
         value: "N8N-deploy"
 
-databases:
-  - name: n8n-database
-    plan: free
-    region: frankfurt
+      # --- Host config ---
+      - key: N8N_HOST
+        value: n8n-deploy-5io2.onrender.com
+      - key: N8N_PORT
+        value: "443"
+      - key: N8N_PROTOCOL
+        value: https
 
