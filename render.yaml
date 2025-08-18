@@ -1,36 +1,52 @@
 services:
   - type: web
-    name: n8n
+    name: n8n-service
     env: docker
+    repo: https://github.com/n8n-io/n8n
     plan: free
-    dockerfilePath: ./Dockerfile
+    region: frankfurt
+    branch: main
+    dockerfilePath: Dockerfile
     envVars:
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
-        sync: false
+        fromDatabase:
+          name: n8n-database
+          property: host
       - key: DB_POSTGRESDB_PORT
-        value: "5432"
+        fromDatabase:
+          name: n8n-database
+          property: port
       - key: DB_POSTGRESDB_DATABASE
-        sync: false
+        fromDatabase:
+          name: n8n-database
+          property: database
       - key: DB_POSTGRESDB_USER
-        sync: false
+        fromDatabase:
+          name: n8n-database
+          property: user
       - key: DB_POSTGRESDB_PASSWORD
-        sync: false
-
-     
+        fromDatabase:
+          name: n8n-database
+          property: password
       - key: N8N_HOST
-        value: "n8n-deploy-5io2.onrender.com"
+        value: n8n-service.onrender.com
       - key: N8N_PORT
         value: "443"
       - key: N8N_PROTOCOL
-        value: "https"
-      - key: WEBHOOK_URL
-        value: "https://n8n-deploy-5io2.onrender.com/"
-
+        value: https
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
       - key: N8N_BASIC_AUTH_ACTIVE
         value: "true"
       - key: N8N_BASIC_AUTH_USER
-        value: "admin"
+        value: "anicet22.aps2a@gmail.com"
       - key: N8N_BASIC_AUTH_PASSWORD
-        value: "superpassword"
+        value: "N8N-deploy"
+
+databases:
+  - name: n8n-database
+    plan: free
+    region: frankfurt
+
