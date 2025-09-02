@@ -2,26 +2,34 @@ services:
   - type: web
     name: n8n
     env: docker
-    region: frankfurt
-    plan: free
-    branch: main
+    region: frankfurt # optional (defaults to oregon)
+    plan: free # optional (defaults to starter)
+    branch: main # optional (defaults to master)
     numInstances: 1
     healthCheckPath: /healthz
     envVars:
       - key: DB_TYPE
         value: postgresdb
       - key: DB_POSTGRESDB_HOST
-        value: YOUR_SUPABASE_HOST
+        fromDatabase:
+          name: n8nDB
+          property: host
       - key: DB_POSTGRESDB_DATABASE
-        value: YOUR_SUPABASE_DATABASE
+        fromDatabase:
+          name: n8nDB
+          property: database
       - key: DB_POSTGRESDB_PORT
-        value: YOUR_SUPABASE_PORT
+        fromDatabase:
+          name: n8nDB
+          property: port
       - key: DB_POSTGRESDB_USER
-        value: YOUR_SUPABASE_USER
+        fromDatabase:
+          name: n8nDB
+          property: user
       - key: DB_POSTGRESDB_PASSWORD
-        value: YOUR_SUPABASE_PASSWORD
-      - key: DB_POSTGRESDB_SSLMODE
-        value: require
+        fromDatabase:
+          name: n8nDB
+          property: password
       - key: PORT
         value: 5678
       - key: N8N_LOG_LEVEL
@@ -34,7 +42,8 @@ services:
         value: fr
       - key: N8N_ENCRYPTION_KEY
         generateValue: true
-      - key: N8N_BASIC_AUTH_ACTIVE
-        value: true
-     
 
+databases:
+  - name: n8nDB
+    region: frankfurt # optional (defaults to oregon)
+    plan: free
